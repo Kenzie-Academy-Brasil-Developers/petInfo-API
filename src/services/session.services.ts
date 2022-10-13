@@ -3,6 +3,7 @@ import { prisma } from ".."
 import AppError from "../errors/appError"
 import authConfig from '../configs/auth'
 import { sign } from "jsonwebtoken"
+import { IResponseUser } from "../interfaces"
 
 export const authService = async (email: string, password: string) => {
   const user = await prisma.user.findUnique({
@@ -31,4 +32,20 @@ export const authService = async (email: string, password: string) => {
   return {
     token
   }
+}
+
+export const getProfile = async (id: string): Promise<IResponseUser> => {
+  const checkUser = await prisma.user.findUnique({
+    where: {
+      id
+    }
+  })
+
+  if(!checkUser) {
+    throw new AppError('Usuário não encontrado, por favor, faça login e tente novamente', 401)
+  }
+
+  const {password, ...rest} = checkUser
+
+  return rest
 }
