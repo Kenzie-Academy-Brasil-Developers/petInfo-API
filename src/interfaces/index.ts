@@ -21,7 +21,20 @@ export interface IResponseUser {
 export interface IUpdateUser {
   username?: string
   email?: string
-  password?: string
   avatar?: string
-  old_password?: string
+}
+
+export interface ICreatePost {
+  title: string
+  content: string
+}
+
+export interface IResponsePost extends ICreatePost {
+  id: string
+  user: IResponseUser
+}
+
+export interface IUpdatePost {
+  title?: string
+  content?: string
 }
