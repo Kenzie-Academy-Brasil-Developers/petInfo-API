@@ -17,3 +17,11 @@ export interface IResponseUser {
   email: string
   avatar: string
 }
+
+export interface IUpdateUser {
+  username?: string
+  email?: string
+  password?: string
+  avatar?: string
+  old_password?: string
+}
