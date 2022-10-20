@@ -13,6 +13,7 @@ CREATE TABLE "posts" (
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "posts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 

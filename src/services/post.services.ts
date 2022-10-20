@@ -20,6 +20,7 @@ export const createPost = async (data: ICreatePost, id: string): Promise<IRespon
     id: newPost.id,
     title: newPost.title,
     content: newPost.content,
+    createdAt: newPost.created_at,
     user: { ...rest }
   }
 
@@ -42,6 +43,7 @@ export const getAllPosts = async (): Promise<IResponsePost[]> => {
       id: post.id,
       title: post.title,
       content: post.content,
+      createdAt: post.created_at,
       user: { ...rest }
     }
 
@@ -99,7 +101,7 @@ export const deletePost = async (id: string) => {
     throw new AppError('Post não encontrado, por favor verifique o ID informado no parametro da requisição', 404)
   }
 
-  const deleted =  await prisma.post.delete({
+  const deleted = await prisma.post.delete({
     where: {
       id
     }
