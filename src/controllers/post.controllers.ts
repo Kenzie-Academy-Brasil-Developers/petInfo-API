@@ -31,6 +31,7 @@ export const getPosts = async (req: Request, res: Response, next: NextFunction) 
 }
 
 export const updatePostById = async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.user
   const { post_id } = req.params
   const data = req.body
   const validKeys = ['title', 'content']
@@ -53,7 +54,7 @@ export const updatePostById = async (req: Request, res: Response, next: NextFunc
 
 
 
-    const updatedPost = await updatePost(data, post_id)
+    const updatedPost = await updatePost(data, post_id, id)
 
     return res.status(200).send(updatedPost)
 
@@ -63,12 +64,13 @@ export const updatePostById = async (req: Request, res: Response, next: NextFunc
 }
 
 export const deletePostById = async (req: Request, res: Response, next: NextFunction) => {
-  const {post_id} = req.params
+  const { post_id } = req.params
+  const { id } = req.user
 
   try {
-    await deletePost(post_id)
+    await deletePost(post_id, id)
 
-    return res.status(200).send({message: 'Post deletado com sucesso'})
+    return res.status(200).send({ message: 'Post deletado com sucesso' })
   } catch (error) {
     next(error)
   }

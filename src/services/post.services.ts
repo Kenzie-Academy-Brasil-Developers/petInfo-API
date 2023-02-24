@@ -53,7 +53,7 @@ export const getAllPosts = async (): Promise<IResponsePost[]> => {
   return response
 }
 
-export const updatePost = async (data: IUpdatePost, id: string): Promise<IResponsePost> => {
+export const updatePost = async (data: IUpdatePost, id: string, user: string): Promise<IResponsePost> => {
   const checkPost = await prisma.post.findUnique({
     where: {
       id
@@ -62,6 +62,16 @@ export const updatePost = async (data: IUpdatePost, id: string): Promise<IRespon
 
   if (!checkPost) {
     throw new AppError('Post não encontrado, por favor verifique o id do post informado', 404)
+  }
+
+  const checkUserPost = await prisma.user.findUnique({
+    where: {
+      id: user
+    }
+  })
+
+  if(checkUserPost?.id !== checkPost.user_id) {
+    throw new AppError('Apenas o usuário que criou o post pode editá-lo', 401)
   }
 
   const updatedPost = await prisma.post.update({
@@ -90,7 +100,7 @@ export const updatePost = async (data: IUpdatePost, id: string): Promise<IRespon
 
 }
 
-export const deletePost = async (id: string) => {
+export const deletePost = async (id: string, user: string) => {
   const checkPost = await prisma.post.findUnique({
     where: {
       id
@@ -99,6 +109,16 @@ export const deletePost = async (id: string) => {
 
   if (!checkPost) {
     throw new AppError('Post não encontrado, por favor verifique o ID informado no parametro da requisição', 404)
+  }
+
+  const checkUserPost = await prisma.user.findUnique({
+    where: {
+      id: user
+    }
+  })
+
+  if(checkUserPost?.id !== checkPost.user_id) {
+    throw new AppError('Apenas o usuário que criou o post pode deletá-lo', 401)
   }
 
   const deleted = await prisma.post.delete({
