@@ -53,6 +53,28 @@ export const getAllPosts = async (): Promise<IResponsePost[]> => {
   return response
 }
 
+export const getPostById = async (postId: string): Promise<IResponsePost> => {
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId
+    },
+    include: {
+      userId: true
+    }
+  })
+
+  if (!post) {
+    throw new AppError('Post não encontrado, por favor verifique o id do post informado', 404)
+  }
+
+  const { password, ...rest } = post.userId
+
+  return {
+    ...post,
+    user: { ...rest }
+  }
+}
+
 export const updatePost = async (data: IUpdatePost, id: string, user: string): Promise<IResponsePost> => {
   const checkPost = await prisma.post.findUnique({
     where: {
@@ -70,7 +92,7 @@ export const updatePost = async (data: IUpdatePost, id: string, user: string): P
     }
   })
 
-  if(checkUserPost?.id !== checkPost.user_id) {
+  if (checkUserPost?.id !== checkPost.user_id) {
     throw new AppError('Apenas o usuário que criou o post pode editá-lo', 401)
   }
 
@@ -117,7 +139,7 @@ export const deletePost = async (id: string, user: string) => {
     }
   })
 
-  if(checkUserPost?.id !== checkPost.user_id) {
+  if (checkUserPost?.id !== checkPost.user_id) {
     throw new AppError('Apenas o usuário que criou o post pode deletá-lo', 401)
   }
 

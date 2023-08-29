@@ -351,6 +351,40 @@
         }
       }
     },
+    "/posts/postById/{post_id}": {
+      "get": {
+        "description": "Rota responsável por um post de acordo com o id informado por parâmetro",
+        "tags": ["Rotas autenticadas"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/postResponse"
+                },
+                "examples": {
+                  "posts": {
+                    "value": {
+                      "id": "632ddab1-2d5a-4533-9b82-a846fe12f2b2",
+                      "title": "Castração Solidária",
+                      "content": "Estou promovendo um evento com parceria de algumas petShops e clinicas veterinárias da região de Porto Alegre e faremos a castração gratuita dos 100 primeiros pets que estiver no parque da redenção no dia 10/10/2022",
+                      "user": {
+                        "id": "190f5cad-a7b5-4f78-ab3f-30d2d947b14b",
+                        "username": "Bertoldo",
+                        "email": "rafael@kenzie.com.br",
+                        "avatar": "https://i.pinimg.com/originals/27/87/5d/27875d70cf52a0a643aeda13bbb7b0cd.jpg"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/posts/{id}": {
       "patch": {
         "description": "Rota responsável por atualizar as informações de um post",

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import AppError from "../errors/appError";
-import { createPost, deletePost, getAllPosts, updatePost } from "../services/post.services";
+import { createPost, deletePost, getAllPosts, getPostById, updatePost } from "../services/post.services";
 
 export const createNewPost = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.user
@@ -25,6 +25,17 @@ export const getPosts = async (req: Request, res: Response, next: NextFunction) 
     const posts = await getAllPosts()
 
     return res.send(posts)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getPostByIdReq = async (req: Request, res: Response, next: NextFunction) => {
+  const {post_id} = req.params
+  try {
+    const post = await getPostById(post_id)
+
+    return res.send(post)
   } catch (error) {
     next(error)
   }
