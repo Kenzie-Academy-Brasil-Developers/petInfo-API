@@ -351,7 +351,7 @@
         }
       }
     },
-    "/posts/postById/{post_id}": {
+    "/posts/{post_id}": {
       "get": {
         "description": "Rota responsável por um post de acordo com o id informado por parâmetro",
         "tags": ["Rotas autenticadas"],
